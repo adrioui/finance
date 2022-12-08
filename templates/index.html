@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block main %}
+
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th class="text-start">Symbol</th>
+                <th class="text-start">Name</th>
+                <th class="text-end">Shares</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">TOTAL</th>
+            </tr>
+        </thead>
+
+        <form action="/" method="post">
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td id="symbol" class="text-start">{{ row["symbol"] }}</td>
+                        <input name="symbol" id="new_symbol" type="hidden">
+                        <td class="text-start">{{ row["name"] }}</td>
+                        <td class="text-end">
+                            <button type="button" id="minus">-</button>
+                            <span id="shares">{{ row["shares"] }}</span>
+                            <input name="new_shares" id="new_shares" type="hidden">
+                            <button type="button" id="plus">+</button>
+                        </td>
+                        <td class="text-end">{{ usd(row["price"]) }}</td>
+                        <td class="text-end">{{ usd(row["total"]) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    {% if rows == [] %}
+                        <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
+                        <td class="border-0 w-bold text-end">{{ usd(cash) }}</td>
+                    {% else %}
+                        <td class="border-0 fw-bold text-end" colspan="3">
+                            <button class="border-0 btn fw-bold px-1 pt-2" type="submit">Submit</button>
+                        </td>
+                        <td class="border-0 fw-bold text-end" colspan="1">Cash</td>
+                        <td class="border-0 w-bold text-end">{{ usd(cash) }}</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
+                    <td class="border-0 w-bold text-end">{{ usd(total) }}</td>
+                </tr>
+            </tfoot>
+            
+        </form>
+    </table>
+
+{% endblock %}
